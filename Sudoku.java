@@ -16,7 +16,7 @@ public class Sudoku {
     }
   }
 
-  // This function fills the board with ones as temporary place holders.
+  // This function fills the board with zeros as temporary place holders.
   public static void fillBoardWithZeros(int[][] board) {
     for (int i = 0; i < 9; ++i) {
       for (int j = 0; j < 9; ++j) {
@@ -59,6 +59,19 @@ public class Sudoku {
     return true;
   }
 
+  /* This function generates a valid sudoku board.
+  1 2 3 | 4 5 6 | 7 8 9
+  4 5 6 | 7 8 9 | 1 2 3
+  7 8 9 | 1 2 3 | 4 5 6
+  ---------------------
+  8 9 1 | 2 3 4 | 5 6 7
+  2 3 4 | 5 6 7 | 8 9 1
+  5 6 7 | 8 9 1 | 2 3 4
+  ---------------------
+  6 7 8 | 9 1 2 | 3 4 5
+  9 1 2 | 3 4 5 | 6 7 8
+  3 4 5 | 6 7 8 | 9 1 2
+  */
   public static void generateBoard(int[][] board) {
     int number = 1, row = 0, column = 0;
     while (board[8][8] == 0) {
