@@ -16,15 +16,16 @@ public class Sudoku {
     }
   }
 
-  // This function fills the board with ones as temporary place holders.
-  public static void fillBoardWithOnes(int[][] board) {
+  // This function fills the board with zeros as temporary place holders.
+  public static void fillBoardWithZeros(int[][] board) {
     for (int i = 0; i < 9; ++i) {
       for (int j = 0; j < 9; ++j) {
-        board[i][j] = 1;
+        board[i][j] = 0;
       }
     }
   }
 
+  // This function checks if the number is valid in the row, column, and box.
   public static boolean valid(int row, int column, int number, int[][] board) {
     for (int i = 0; i < 9; ++i) {
       if (i == row) {
@@ -58,11 +59,41 @@ public class Sudoku {
     return true;
   }
 
+  /* This function generates a valid sudoku board.
+  1 2 3 | 4 5 6 | 7 8 9
+  4 5 6 | 7 8 9 | 1 2 3
+  7 8 9 | 1 2 3 | 4 5 6
+  ---------------------
+  8 9 1 | 2 3 4 | 5 6 7
+  2 3 4 | 5 6 7 | 8 9 1
+  5 6 7 | 8 9 1 | 2 3 4
+  ---------------------
+  6 7 8 | 9 1 2 | 3 4 5
+  9 1 2 | 3 4 5 | 6 7 8
+  3 4 5 | 6 7 8 | 9 1 2
+  */
+  public static void generateBoard(int[][] board) {
+    int number = 1, row = 0, column = 0;
+    while (board[8][8] == 0) {
+      if (valid(row, column, number, board)) {
+        board[row][column] = number;
+        ++column;
+        if (column == 9) {
+          ++row;
+          column = 0;
+        }
+      }
+      if (++number == 10) {
+        number = 0;
+      }
+    }
+  }
+
   // Main function runs the game.
   public static void main(String[] args) {
     int[][] sudokuBoard = new int[9][9];
-    fillBoardWithOnes(sudokuBoard);
-    boolean valid = valid(0, 0, 2, sudokuBoard);
+    fillBoardWithZeros(sudokuBoard);
+    generateBoard(sudokuBoard);
     printBoard(sudokuBoard);
   }
 }
