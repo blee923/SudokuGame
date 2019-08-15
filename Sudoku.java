@@ -18,15 +18,6 @@ public class Sudoku {
     }
   }
 
-  // This function fills the board with zeros as temporary place holders.
-  public static void fillBoardWithZeros(int[][] board) {
-    for (int i = 0; i < 9; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        board[i][j] = 0;
-      }
-    }
-  }
-
   // This function checks if the number is valid in the row, column, and box.
   public static boolean valid(int row, int column, int number, int[][] board) {
     for (int i = 0; i < 9; ++i) {
@@ -184,7 +175,6 @@ public class Sudoku {
   // Main function runs the game.
   public static void main(String[] args) {
     int[][] sudokuBoard = new int[9][9];
-    fillBoardWithZeros(sudokuBoard);
     generateBoard(sudokuBoard);
     shifting(sudokuBoard);
     // moveRowsChunks(sudokuBoard);
