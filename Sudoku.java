@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Sudoku {
   // This function prints the Sudoku board in text.
   public static void printBoard(int[][] board) {
@@ -89,11 +91,104 @@ public class Sudoku {
     }
   }
 
+  public static void moveRows(int[][] board) {
+    Random rand = new Random();
+    int first = rand.nextInt(9);
+    int second = first + 1;
+    if (second == 3 || second == 6 || second == 9) {
+      second -= 2;
+    }
+    int[] temp = board[first];
+    board[first] = board[second];
+    board[second] = temp;
+  }
+
+  public static void moveColumns(int[][] board) {
+    Random rand = new Random();
+    int first = rand.nextInt(9);
+    int second = first + 1;
+    if (second == 3 || second == 6 || second == 9) {
+      second -= 2;
+    }
+    for (int i = 0; i < 9; ++i) {
+      int temp = board[i][first];
+      board[i][first] = board[i][second];
+      board[i][second] = temp;
+    }
+  }
+
+  public static void moveRowsChunks(int[][] board) {
+    Random rand = new Random();
+    int first = rand.nextInt(3);
+    int second = rand.nextInt(3);
+    while (first == second) {
+      second = rand.nextInt(3);
+    }
+    first *= 3;
+    second *= 3;
+    for (int i = 0; i < 3; ++i, ++first, ++second) {
+      int[] temp = board[first];
+      board[first] = board[second];
+      board[second] = temp;
+    }
+  }
+
+  public static void moveColumnsChunks(int[][] board) {
+    Random rand = new Random();
+    int first = rand.nextInt(3);
+    int second = rand.nextInt(3);
+    while (first == second) {
+      second = rand.nextInt(3);
+    }
+    first *= 3;
+    second *= 3;
+    for (int i = 0; i < 3; ++i, ++first, ++second) {
+      for (int j = 0; j < 9; ++j) {
+        int temp = board[j][first];
+        board[j][first] = board[j][second];
+        board[j][second] = temp;
+      }
+    }
+  }
+
+  public static int[][] transpose(int[][] board) {
+    int[][] temp = new int[9][9];
+    for (int i = 0; i < 9; ++i) {
+      for (int j = 0; j < 9; ++j) {
+        temp[i][j] = board[j][i];
+      }
+    }
+    return temp;
+  }
+
+  public static void shifting(int[][] board) {
+    Random rand = new Random();
+    int counter = rand.nextInt(101);
+    while (counter > 0) {
+      int chooser = rand.nextInt(5) + 1;
+      if (chooser == 1) {
+        moveRows(board);
+      } else if (chooser == 2) {
+        moveColumns(board);
+      } else if (chooser == 3) {
+        moveRowsChunks(board);
+      } else if (chooser == 4) {
+        moveColumnsChunks(board);
+      } else {
+        board = transpose(board);
+      }
+      counter -= chooser;
+    }
+  }
+
   // Main function runs the game.
   public static void main(String[] args) {
     int[][] sudokuBoard = new int[9][9];
     fillBoardWithZeros(sudokuBoard);
     generateBoard(sudokuBoard);
+    shifting(sudokuBoard);
+    // moveRowsChunks(sudokuBoard);
+    // sudokuBoard = transpose(sudokuBoard);
     printBoard(sudokuBoard);
   }
 }
