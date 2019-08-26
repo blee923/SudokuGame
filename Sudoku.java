@@ -172,11 +172,30 @@ public class Sudoku {
     }
   }
 
+  public static boolean solver(int[][] board) {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 0; ++j) {
+            if (board[i][j] == 0) {
+                for (int k = 1; k <= 9; ++k) {
+                    board[i][j] = k;
+                    if (valid(i, j, k, board) && solver(board)) {
+                        return true;
+                    }
+                }
+                board[i][j] = 0;
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
   // Main function runs the game.
   public static void main(String[] args) {
     int[][] sudokuBoard = new int[9][9];
     generateBoard(sudokuBoard);
     shifting(sudokuBoard);
+    sudokuBoard[0][0] = 0;
     // moveRowsChunks(sudokuBoard);
     // sudokuBoard = transpose(sudokuBoard);
     printBoard(sudokuBoard);
