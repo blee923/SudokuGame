@@ -172,6 +172,15 @@ public class Sudoku {
     }
   }
 
+  // avg nums - easy: 45, med: 51, hard: 54
+  public static void remover(int[][] board) {
+    int[] arr = {45,51,54};
+    Random rand = new Random();
+    int number = rand.nextInt(3);
+    int counter = arr[number];
+    while ()
+  }
+
   // Main function runs the game.
   public static void main(String[] args) {
     int[][] sudokuBoard = new int[9][9];
