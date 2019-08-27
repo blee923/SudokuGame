@@ -1,10 +1,14 @@
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Sudoku {
   // This function prints the Sudoku board in text.
   public static void printBoard(int[][] board) {
+    System.out.println("   1 2 3   4 5 6   7 8 9");
+    System.out.println();
     for (int i = 0; i < 9; ++i) {
-      String tempString = "";
+      String tempString = (i + 1) + " ";
       for (int j = 0; j < 9; ++j) {
         tempString += " " + board[i][j];
         if (j == 2 || j == 5) {
@@ -25,7 +29,7 @@ public class Sudoku {
       if (i == row) {
         continue;
       }
-      if (board[row][i] == number) {
+      if (board[i][column] == number) {
         return false;
       }
     }
@@ -33,7 +37,7 @@ public class Sudoku {
       if (j == column) {
         continue;
       }
-      if (board[j][column] == number) {
+      if (board[row][j] == number) {
         return false;
       }
     }
@@ -182,10 +186,9 @@ public class Sudoku {
   }
 
   // avg nums - easy: 45, med: 51, hard: 54
-  public static void remover(int[][] board) {
+  public static void remover(int[][] board, boolean[][] change, ArrayList<Integer> changed) {
     Random rand = new Random();
-    int counter = 45;
-    // System.out.println(counter);
+    int counter = 40;
     while (counter > 0) {
       int temp = rand.nextInt(9);
       int temp2 = rand.nextInt(9);
@@ -193,23 +196,61 @@ public class Sudoku {
         temp = rand.nextInt(9);
         temp2 = rand.nextInt(9);
       }
-      // System.out.println("temp: " + temp);
-      // System.out.println("temp2: " + temp2);
       board[temp][temp2] = 0;
-      // System.out.println(solver(board));
-      // printBoard(board);
+      change[temp][temp2] = true;
+      changed.add(((temp + 1) * 8) + temp2 + 1);
       --counter;
+    }
+  }
+
+  public static void playGame() {
+    Scanner scan = new Scanner(System.in);
+    int[][] sudokuBoard = new int[9][9];
+    ArrayList<Integer> changed = new ArrayList<Integer>();
+    boolean[][] changeable = new boolean[9][9];
+    generateBoard(sudokuBoard);
+    shifting(sudokuBoard);
+    printBoard(sudokuBoard);
+    remover(sudokuBoard, changeable, changed);
+    while (changed.size() > 0) {
+      printBoard(sudokuBoard);
+      System.out.println("Choose your row (1-9)");
+      int row = scan.nextInt() - 1;
+      System.out.println("Choose your column (1-9)");
+      int column = scan.nextInt() - 1;
+      if (changeable[row][column] == false) {
+        System.out.println("That block was not empty, please try again.");
+      } else {
+        System.out.println("What would you like to put there?");
+        int number = scan.nextInt();
+        sudokuBoard[row][column] = number;
+        int removal = (row + 1) * 8 + column + 1;
+        removal = changed.indexOf(removal);
+        changed.remove(removal);
+      }
+    }
+    printBoard(sudokuBoard);
+    boolean solved = true;
+    for (int i = 0; i < 9; ++i) {
+      for (int j = 0; j < 9; ++j) {
+        int number = sudokuBoard[i][j];
+        if (!valid(i, j, number, sudokuBoard)) {
+          solved = false;
+          break;
+        }
+      }
+      if (!solved) {
+        System.out.println("You lost!");
+        break;
+      } else {
+        System.out.println("You win!");
+        break;
+      }
     }
   }
 
   // Main function runs the game.
   public static void main(String[] args) {
-    int[][] sudokuBoard = new int[9][9];
-    generateBoard(sudokuBoard);
-    shifting(sudokuBoard);
-    // moveRowsChunks(sudokuBoard);
-    // sudokuBoard = transpose(sudokuBoard);
-    remover(sudokuBoard);
-    printBoard(sudokuBoard);
+    playGame();
   }
 }
