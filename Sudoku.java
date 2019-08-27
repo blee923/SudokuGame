@@ -16,6 +16,7 @@ public class Sudoku {
         System.out.println("---------------------");
       }
     }
+    System.out.println();
   }
 
   // This function checks if the number is valid in the row, column, and box.
@@ -52,21 +53,10 @@ public class Sudoku {
     return true;
   }
 
-  /* This function generates a valid sudoku board.
-  1 2 3 | 4 5 6 | 7 8 9
-  4 5 6 | 7 8 9 | 1 2 3
-  7 8 9 | 1 2 3 | 4 5 6
-  ---------------------
-  8 9 1 | 2 3 4 | 5 6 7
-  2 3 4 | 5 6 7 | 8 9 1
-  5 6 7 | 8 9 1 | 2 3 4
-  ---------------------
-  6 7 8 | 9 1 2 | 3 4 5
-  9 1 2 | 3 4 5 | 6 7 8
-  3 4 5 | 6 7 8 | 9 1 2
-  */
+  // This function generates a valid sudoku board.
   public static void generateBoard(int[][] board) {
-    int number = 1, row = 0, column = 0;
+    Random rand = new Random();
+    int number = rand.nextInt(8) + 1, row = 0, column = 0;
     while (board[8][8] == 0) {
       if (valid(row, column, number, board)) {
         board[row][column] = number;
@@ -154,7 +144,7 @@ public class Sudoku {
 
   public static void shifting(int[][] board) {
     Random rand = new Random();
-    int counter = rand.nextInt(101);
+    int counter = rand.nextInt(201);
     while (counter > 0) {
       int chooser = rand.nextInt(5) + 1;
       if (chooser == 1) {
@@ -172,13 +162,44 @@ public class Sudoku {
     }
   }
 
+  public static boolean solver(int[][] board) {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (board[i][j] == 0) {
+                for (int k = 1; k <= 9; ++k) {
+                    board[i][j] = k;
+                    if (valid(i, j, k, board) && solver(board)) {
+                        board[i][j] = 0;
+                        return true;
+                    }
+                }
+                board[i][j] = 0;
+                return false;
+            }
+        }
+    }
+    return true;
+  }
+
   // avg nums - easy: 45, med: 51, hard: 54
   public static void remover(int[][] board) {
-    int[] arr = {45,51,54};
     Random rand = new Random();
-    int number = rand.nextInt(3);
-    int counter = arr[number];
-    while ()
+    int counter = 45;
+    // System.out.println(counter);
+    while (counter > 0) {
+      int temp = rand.nextInt(9);
+      int temp2 = rand.nextInt(9);
+      while (board[temp][temp2] == 0) {
+        temp = rand.nextInt(9);
+        temp2 = rand.nextInt(9);
+      }
+      // System.out.println("temp: " + temp);
+      // System.out.println("temp2: " + temp2);
+      board[temp][temp2] = 0;
+      // System.out.println(solver(board));
+      // printBoard(board);
+      --counter;
+    }
   }
 
   // Main function runs the game.
@@ -188,6 +209,7 @@ public class Sudoku {
     shifting(sudokuBoard);
     // moveRowsChunks(sudokuBoard);
     // sudokuBoard = transpose(sudokuBoard);
+    remover(sudokuBoard);
     printBoard(sudokuBoard);
   }
 }
