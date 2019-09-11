@@ -82,6 +82,7 @@ public class Sudoku {
     }
   }
 
+  // This function moves rows to create a unique board.
   public static void moveRows(int[][] board) {
     Random rand = new Random();
     int first = rand.nextInt(9);
@@ -94,6 +95,7 @@ public class Sudoku {
     board[second] = temp;
   }
 
+  // This function moves columns to create a unique board.
   public static void moveColumns(int[][] board) {
     Random rand = new Random();
     int first = rand.nextInt(9);
@@ -108,6 +110,7 @@ public class Sudoku {
     }
   }
 
+  // This function moves row chunks to create a unique board.
   public static void moveRowsChunks(int[][] board) {
     Random rand = new Random();
     int first = rand.nextInt(3);
@@ -124,6 +127,7 @@ public class Sudoku {
     }
   }
 
+  // This function moves column chunks to create a unique board.
   public static void moveColumnsChunks(int[][] board) {
     Random rand = new Random();
     int first = rand.nextInt(3);
